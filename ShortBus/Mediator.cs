@@ -8,7 +8,7 @@ namespace ShortBus
     public interface IMediator
     {
         TResponseData Request<TResponseData>(IRequest<TResponseData> request);
-        Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> query);
+        Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> request);
 
         void Notify<TNotification>(TNotification notification);
         Task NotifyAsync<TNotification>(TNotification notification);
@@ -25,11 +25,15 @@ namespace ShortBus
         }
 
         public virtual TResponseData Request<TResponseData>(IRequest<TResponseData> request) {
-            return HandlerInstanceBuilder(typeof(IRequestHandler<,>)).Handle((dynamic)request);
+            return
+                HandlerInstanceBuilder(typeof (IRequestHandler<,>).MakeGenericType(request.GetType(),
+                    typeof (TResponseData))).Handle((dynamic) request);
         }
 
-        public Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> query) {
-            return HandlerInstanceBuilder(typeof(IAsyncRequestHandler<,>)).HandleAsync((dynamic)query);
+        public Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> request) {
+            return
+                HandlerInstanceBuilder(typeof (IAsyncRequestHandler<,>).MakeGenericType(request.GetType(),
+                    typeof (TResponseData))).HandleAsync((dynamic) request);
         }
 
         public void Notify<TNotification>(TNotification notification) {
