@@ -1,5 +1,6 @@
 ## ShortBus 3.x with Structuremap 3 support
 ShortBus is an in-process mediator with low-friction API from mhinze https://github.com/mhinze
+with some nice contributions from sickboy https://github.com/sickboy
 
 ### Notification
     public class DoSomething : INotification { }
