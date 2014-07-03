@@ -47,7 +47,7 @@ with some nice contributions from sickboy https://github.com/sickboy
 
 	var answer = await _mediator.RequestAsync(new AskAQuestion());
 
-### Catch Exceptions and package into ResponseObject
+### Catch exceptions and package into Response object
 	ShortBus.Response response = await _mediator.RequestWithResponseAsync(new AskAQuestion());
     var answer = response.Data;
     var exception = response.Exception;
