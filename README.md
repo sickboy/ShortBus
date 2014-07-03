@@ -1,30 +1,57 @@
 ## ShortBus
-ShortBus is an in-process mediator with low-friction API
+ShortBus is an in-process mediator with low-friction API from mhinze https://github.com/mhinze
 
-### Command
-    public class DoSomething : ICommand { }
+### Notification
+    public class DoSomething : INotification { }
 
-	public class DoesSomething : ICommandHandler<DoSomething> {
+	public class DoesSomething : INotificationHandler<DoSomething> {
 		public void Handle(DoSomething command) {
 		   // does something
 		}
 	}
 
-    _mediator.Send(new DoSomething());
+    _mediator.Notify(new DoSomething());
 
+### Async Notification
+    public class DoSomething : IAsyncNotification { }
 
+	public class DoesSomething : IAsyncNotificationHandler<DoSomething> {
+		public async Task Handle(DoSomething command) {
+		   // await ... does something
+		}
+	}
 
-### Query
-    public class AskAQuestion : IQuery<Answer> { }
+    await _mediator.NotifyAsync(new DoSomething());
 
-	public class Answerer : IQueryHandler<AskAQuestion, Answer> {
-	    public Answer Handle(AskAQuestion query) {			
+### Request/Command
+    public class AskAQuestion : IRequest<Answer> { }
+
+	public class Answerer : IRequestHandler<AskAQuestion, Answer> {
+	    public Answer Handle(AskAQuestion request) {			
 			return answer;
 		}
 	}
 
 	var answer = _mediator.Request(new AskAQuestion());
 	
+
+### Async Request/Command
+    public class AskAQuestion : IAsyncRequest<Answer> { }
+
+	public class Answerer : IAsyncRequestHandler<AskAQuestion, Answer> {
+	    public async Task<Answer> Handle(AskAQuestion request) {			
+			return await ... answer;
+		}
+	}
+
+	var answer = await _mediator.RequestAsync(new AskAQuestion());
+
+### Catch Exceptions and package into ResponseObject
+	ShortBus.Response response = await _mediator.RequestWithResponseAsync(new AskAQuestion());
+    var answer = response.Data;
+    var exception = response.Exception;
+    var hasException = response.HasException();
+
 ### StructureMap
 ShortBus depends on StructureMap and it requires that you register 
 handlers:
@@ -34,8 +61,10 @@ handlers:
         s.AssemblyContainingType<IMediator>();
         s.TheCallingAssembly();
         s.WithDefaultConventions();
-        s.AddAllTypesOf(typeof (IQueryHandler<,>));
-        s.AddAllTypesOf(typeof (ICommandHandler<>));
+        s.ConnectImplementationsToTypesClosing( ( typeof ( IRequestHandler<,> ) ) );
+        s.ConnectImplementationsToTypesClosing( ( typeof ( IAsyncRequestHandler<,> ) ) );
+        s.AddAllTypesOf( typeof ( INotificationHandler<> ) );
+        s.AddAllTypesOf( typeof ( IAsyncNotificationHandler<> ) );
     }));	
 
 ### Low-friction API
