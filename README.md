@@ -52,8 +52,8 @@ ShortBus is an in-process mediator with low-friction API from mhinze https://git
     var exception = response.Exception;
     var hasException = response.HasException();
 
-### StructureMap
-ShortBus depends on StructureMap and it requires that you register 
+### StructureMap configuration
+ShortBus can use different IoC containers. StructureMap for example requires that you register 
 handlers:
 
     ObjectFactory.Initialize(i => i.Scan(s =>
@@ -66,6 +66,8 @@ handlers:
         s.AddAllTypesOf( typeof ( INotificationHandler<> ) );
         s.AddAllTypesOf( typeof ( IAsyncNotificationHandler<> ) );
     }));	
+
+Configuration examples for other IoC containers can be found in the test project.
 
 ### Low-friction API
 No type parameter noise.
