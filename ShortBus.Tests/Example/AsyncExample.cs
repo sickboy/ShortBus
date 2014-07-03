@@ -1,4 +1,6 @@
-﻿namespace ShortBus.Tests.Example
+﻿using StructureMap.Graph;
+
+namespace ShortBus.Tests.Example
 {
     using System.Collections;
     using System.Collections.Generic;

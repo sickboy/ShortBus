@@ -70,7 +70,7 @@
         {
             var registered = new Registered();
 
-            ObjectFactory.Initialize(i => i.Register(registered));
+            ObjectFactory.Initialize(i => i.For<Registered>().Use(registered));
 
             var resolver = new StructureMapDependencyResolver(ObjectFactory.Container);
 

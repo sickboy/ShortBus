@@ -4,6 +4,7 @@ using NUnit.Framework;
 using ShortBus.StructureMap;
 using StructureMap;
 using ShortBus;
+using StructureMap.Graph;
 
 namespace ShortBus.Tests.Example
 {
@@ -19,7 +20,7 @@ namespace ShortBus.Tests.Example
                     s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.AddAllTypesOf((typeof(IRequestHandler<,>)));
+                    s.ConnectImplementationsToTypesClosing((typeof(IRequestHandler<,>)));
                     s.AddAllTypesOf(typeof(INotificationHandler<>));
                 });
 
