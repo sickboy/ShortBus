@@ -23,7 +23,7 @@ ShortBus is an in-process mediator with low-friction API from mhinze https://git
 
     await _mediator.NotifyAsync(new DoSomething());
 
-### Request/Command
+### Request
     public class AskAQuestion : IRequest<Answer> { }
 
 	public class Answerer : IRequestHandler<AskAQuestion, Answer> {
@@ -35,7 +35,7 @@ ShortBus is an in-process mediator with low-friction API from mhinze https://git
 	var answer = _mediator.Request(new AskAQuestion());
 	
 
-### Async Request/Command
+### Async Request
     public class AskAQuestion : IAsyncRequest<Answer> { }
 
 	public class Answerer : IAsyncRequestHandler<AskAQuestion, Answer> {
