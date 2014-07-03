@@ -51,7 +51,7 @@
 
             var mediator = new Mediator(resolver);
 
-            var task = mediator.RequestAsync(query);
+            var task = mediator.RequestWithResponseAsync(query);
 
             Assert.That(task.Result.Data, Is.EqualTo("success"));
             Assert.That(task.Result.HasException(), Is.False);
