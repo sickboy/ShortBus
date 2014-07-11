@@ -72,7 +72,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.HasException(), Is.False,
                 pong.Exception == null ? string.Empty : pong.Exception.ToString());
@@ -86,7 +86,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.HasException(), Is.False,
                 pong.Exception == null ? string.Empty : pong.Exception.ToString());
@@ -100,7 +100,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.HasException(), Is.False,
                 pong.Exception == null ? string.Empty : pong.Exception.ToString());
@@ -114,7 +114,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.HasException(), Is.False,
                 pong.Exception == null ? string.Empty : pong.Exception.ToString());
@@ -132,7 +132,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var response = mediator.Request(command);
+            var response = mediator.RequestWithResponse(command);
 
             Assert.That(response.HasException(), Is.False,
                 response.Exception == null ? string.Empty : response.Exception.ToString());
@@ -149,7 +149,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var response = mediator.Request(command);
+            var response = mediator.RequestWithResponse(command);
 
             Assert.That(response.HasException(), Is.False,
                 response.Exception == null ? string.Empty : response.Exception.ToString());
@@ -162,7 +162,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = TestScope.Resolve<IMediator>();
 
-            var response = mediator.Request(command);
+            var response = mediator.RequestWithResponse(command);
 
             Assert.That(response.Data, Is.EqualTo("foo"),
                 response.Exception == null ? string.Empty : response.Exception.ToString());

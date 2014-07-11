@@ -3,6 +3,8 @@ using System.Diagnostics;
 using NUnit.Framework;
 using ShortBus.StructureMap;
 using StructureMap;
+using ShortBus;
+using StructureMap.Graph;
 
 namespace ShortBus.Tests.Example
 {
@@ -18,7 +20,7 @@ namespace ShortBus.Tests.Example
                     s.AssemblyContainingType<IMediator>();
                     s.TheCallingAssembly();
                     s.WithDefaultConventions();
-                    s.AddAllTypesOf((typeof(IRequestHandler<,>)));
+                    s.ConnectImplementationsToTypesClosing((typeof(IRequestHandler<,>)));
                     s.AddAllTypesOf(typeof(INotificationHandler<>));
                 });
 
@@ -35,7 +37,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.Data, Is.EqualTo("PONG!"));
             Assert.That(pong.HasException(), Is.False);
@@ -48,7 +50,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.Data, Is.EqualTo("PONG! PONG! PONG!"));
             Assert.That(pong.HasException(), Is.False);
@@ -61,7 +63,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.Data, Is.EqualTo("PONG!"));
             Assert.That(pong.HasException(), Is.False);
@@ -74,7 +76,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var pong = mediator.Request(query);
+            var pong = mediator.RequestWithResponse(query);
 
             Assert.That(pong.Data, Is.EqualTo("PONG! PONG!"));
             Assert.That(pong.HasException(), Is.False);
@@ -91,7 +93,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var response = mediator.Request(command);
+            var response = mediator.RequestWithResponse(command);
 
             Assert.That(response.HasException(), Is.False, response.Exception == null ? string.Empty : response.Exception.ToString());
         }
@@ -107,7 +109,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = ObjectFactory.GetInstance<IMediator>();
 
-            var response = mediator.Request(command);
+            var response = mediator.RequestWithResponse(command);
 
             Assert.That(response.HasException(), Is.False);
         }
@@ -119,7 +121,7 @@ namespace ShortBus.Tests.Example
 
             var mediator = new Mediator(DependencyResolver.Current);
 
-            var response = mediator.Request(command);
+            var response = mediator.RequestWithResponse(command);
 
             Assert.That(response.Data, Is.EqualTo("foo"));
         }

@@ -1,4 +1,6 @@
-﻿namespace ShortBus.Tests.Example
+﻿using StructureMap.Graph;
+
+namespace ShortBus.Tests.Example
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -51,7 +53,7 @@
 
             var mediator = new Mediator(resolver);
 
-            var task = mediator.RequestAsync(query);
+            var task = mediator.RequestWithResponseAsync(query);
 
             Assert.That(task.Result.Data, Is.EqualTo("success"));
             Assert.That(task.Result.HasException(), Is.False);
