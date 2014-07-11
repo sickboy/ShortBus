@@ -1,3 +1,5 @@
+using Microsoft.CSharp.RuntimeBinder;
+
 namespace ShortBus
 {
     using System;
@@ -31,18 +33,30 @@ namespace ShortBus
             if (request == null)
                 throw new ArgumentNullException("request");
 
-            return
-                HandlerInstanceBuilder(typeof (IRequestHandler<,>).MakeGenericType(request.GetType(),
-                    typeof (TResponseData))).Handle((dynamic) request);
+            try {
+                return
+                    HandlerInstanceBuilder(typeof (IRequestHandler<,>).MakeGenericType(request.GetType(),
+                        typeof (TResponseData))).Handle((dynamic) request);
+            } catch (RuntimeBinderException ex) {
+                if (ex.Message.Contains("'Handle'"))
+                    throw WrapRuntimeBinderException(ex);
+                throw;
+            }
         }
 
         public Task<TResponseData> RequestAsync<TResponseData>(IAsyncRequest<TResponseData> request) {
             if (request == null)
                 throw new ArgumentNullException("request");
 
-            return
-                HandlerInstanceBuilder(typeof (IAsyncRequestHandler<,>).MakeGenericType(request.GetType(),
-                    typeof (TResponseData))).HandleAsync((dynamic) request);
+            try {
+                return
+                    HandlerInstanceBuilder(typeof (IAsyncRequestHandler<,>).MakeGenericType(request.GetType(),
+                        typeof (TResponseData))).HandleAsync((dynamic) request);
+            } catch (RuntimeBinderException ex) {
+                if (ex.Message.Contains("'HandleAsync'"))
+                    throw WrapRuntimeBinderException(ex);
+                throw;
+            }
         }
 
         public void Notify<TNotification>(TNotification notification) {
@@ -71,6 +85,16 @@ namespace ShortBus
             var handlers = _dependencyResolver.GetInstances<IAsyncNotificationHandler<TNotification>>();
 
             return Task.WhenAll(handlers.Select(x => x.HandleAsync(notification)));
+        }
+
+        static MediatorMethodResolveException WrapRuntimeBinderException(RuntimeBinderException ex) {
+            return new MediatorMethodResolveException(
+                "RuntimeBinderException occurred, this usually occurs if the request handler is Internal, either make it public or add the InternalsVisibleTo assembly attribute, with 'ShortBus' as target", ex);
+        }
+
+        class MediatorMethodResolveException : Exception
+        {
+            public MediatorMethodResolveException(string message, Exception inner) : base(message, inner) { }
         }
     }
 }
