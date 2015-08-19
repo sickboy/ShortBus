@@ -7,7 +7,7 @@ namespace ShortBus
     public interface IDependencyResolver
     {
         object GetInstance(Type type);
-        IEnumerable<T> GetInstances<T>();
+        IEnumerable<T> GetInstances<T>() where T : class;
     }
 
     public static class DependencyResolver
@@ -40,7 +40,7 @@ namespace ShortBus
                 return _getInstance(type);
             }
 
-            public IEnumerable<T> GetInstances<T>()
+            public IEnumerable<T> GetInstances<T>() where T : class
             {
                 return _getInstances(typeof (T)).OfType<T>();
             }

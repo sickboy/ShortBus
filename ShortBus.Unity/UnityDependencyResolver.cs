@@ -18,7 +18,7 @@
             return _container.Resolve(type);
         }
 
-        public IEnumerable<T> GetInstances<T>()
+        public IEnumerable<T> GetInstances<T>() where T : class
         {
             return _container.ResolveAll<T>();
         }

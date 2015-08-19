@@ -18,7 +18,7 @@
             return _container.Get(type);
         }
 
-        public IEnumerable<T> GetInstances<T>()
+        public IEnumerable<T> GetInstances<T>() where T : class
         {
             return _container.GetAll<T>();
         }

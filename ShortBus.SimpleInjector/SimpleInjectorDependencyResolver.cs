@@ -20,7 +20,7 @@ namespace ShortBus.SimpleInjector
             return _container.GetInstance(type);
         }
 
-        public IEnumerable<T> GetInstances<T>() {
+        public IEnumerable<T> GetInstances<T>() where T : class {
             return _container.GetAllInstances<T>();
         }
     }

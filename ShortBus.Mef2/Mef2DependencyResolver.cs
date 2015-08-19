@@ -20,7 +20,8 @@ namespace ShortBus.Mef
             return _container.GetExport(type);
         }
 
-        public IEnumerable<T> GetInstances<T>() {
+        public IEnumerable<T> GetInstances<T>() where T : class
+        {
             return _container.GetExports<T>();
         }
     }

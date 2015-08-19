@@ -33,7 +33,7 @@ namespace ShortBus.Mef
             throw new Exception(string.Format("Could not locate any instances of contract {0}.", contract));
         }
 
-        public IEnumerable<T> GetInstances<T>()
+        public IEnumerable<T> GetInstances<T>() where T : class
         {
             return _container.GetExportedValues<T>();
         }
